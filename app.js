@@ -10,11 +10,16 @@ app.use(cookieParser())
 
 
 const corsOptions = {
-    origin: process.env.FRONTEND_URL, // Your frontend's URL
-    methods: ['GET', 'POST', 'PUT'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,  // Allow credentials (cookies, tokens)
-  };
+  origin: function (origin, callback) {
+    if (origin === 'https://www.gaintpro.com' || origin === 'https://gaintpro.com') {
+      callback(null, true); // Allow the request
+    } else {
+      callback(new Error('Not allowed by CORS')); // Reject the request
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
   
   app.use(cors(corsOptions));
   
