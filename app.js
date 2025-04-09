@@ -24,7 +24,8 @@ const corsOptions = {
   credentials: true, // Allow credentials (cookies, tokens)
 };
 
-  
+  app.use(cors(corsOptions)); // ⬅️ This was missing!
+
 
   
   
