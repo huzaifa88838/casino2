@@ -9,19 +9,21 @@ app.use(cookieParser())
 
 
 
+const allowedOrigins = ['https://gaintpro.com', 'https://www.gaintpro.com'];
+
 const corsOptions = {
   origin: function (origin, callback) {
-    if (origin === 'https://www.gaintpro.com' || origin === 'https://gaintpro.com') {
-      callback(null, true); // Allow the request
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS')); // Reject the request
+      callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Allow credentials (cookies, tokens)
 };
-  
-  app.use(cors(corsOptions));
+
   
 
   
