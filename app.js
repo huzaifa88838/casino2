@@ -95,7 +95,7 @@ const getRandomAdSequence = () => {
   });
   let startTime = Math.floor(Date.now() / 1000);
 
-  app.get("/timer", (req, res) => {
+  app.get("/api/timer", (req, res) => {
     const currentTime = Math.floor(Date.now() / 1000);
     const elapsedTime = currentTime - startTime;
     let remainingTime = 60 - elapsedTime;
