@@ -10,7 +10,11 @@ app.use(cookieParser())
 
 
 
-const allowedOrigins = ['https://gaintpro.com', 'https://www.gaintpro.com'];
+const allowedOrigins = [
+  'https://gaintpro.com',
+  'https://www.gaintpro.com',
+  'https://gainti.work.gd' // 👈 add this backend domain
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
