@@ -7,7 +7,6 @@ const app = express();
 
 const allowedOrigins = [
   "https://www.gaintpro.com",
-  "https://ganto.work.gd",
 ];
 
 const corsOptions = {
