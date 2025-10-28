@@ -7,37 +7,26 @@ const app = express()
 
 
 app.use(cookieParser())
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.static("public"));
 
 
-
-const allowedOrigins = [
-  "https://www.gaintpro.com",
-  "https://ganto.work.gd"
-];
-
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-  methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+const corsOptions = {
+  origin: ["https://www.gaintpro.com", "https://ganto.work.gd"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-}));
-
-// ✅ Handle preflight requests manually for safety
-app.options("*", cors({
-  origin: allowedOrigins,
   credentials: true,
-  methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-}));
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
 
-app.use(express.json({limit:"16kb"}))
+app.use(cors(corsOptions));
 
-app.use(express.urlencoded({
-    extended:true,
-    limit:"16kb"
-
-}))
-app.use(express.static("public"))
+// ✅ Handle all OPTIONS (preflight) requests
+app.options("*", cors(corsOptions), (req, res) => {
+  res.sendStatus(204);
+});
 
 
 app.get('/', (req, res) => {
