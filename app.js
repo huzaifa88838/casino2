@@ -6,10 +6,10 @@ import mongoose from 'mongoose'
 const app = express();
 
 
-app.use(cors({
-  origin: 'https://www.gaintpro.com',
-  credentials: true,
-}));
+// app.use(cors({
+//   origin: 'https://www.gaintpro.com',
+//   credentials: true,
+// }));
 
 
 app.use(cookieParser());
