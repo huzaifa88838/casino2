@@ -3,30 +3,35 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import mongoose from 'mongoose'
 // import withdraw from "../models/withdraw.js"
-const app = express()
+const app = express();
 
-
-app.use(cookieParser())
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(express.static("public"));
-
+const allowedOrigins = [
+  "https://www.gaintpro.com",
+  "https://ganto.work.gd",
+];
 
 const corsOptions = {
-  origin: ["https://www.gaintpro.com", "https://ganto.work.gd"],
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
-  preflightContinue: false,
   optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
-// ✅ Handle all OPTIONS (preflight) requests
-app.options("*", cors(corsOptions), (req, res) => {
-  res.sendStatus(204);
-});
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.get('/', (req, res) => {
