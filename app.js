@@ -5,28 +5,30 @@ import mongoose from 'mongoose'
 // import withdraw from "../models/withdraw.js"
 const app = express();
 
-const allowedOrigins = [
-  "https://www.gaintpro.com",
-];
+
+const allowedOrigins = ["https://www.gaintpro.com"];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      // Allow server-to-server or tools like curl
+      return callback(null, true);
+    }
+
     if (allowedOrigins.includes(origin)) {
-      callback(null, true);
+      callback(null, origin); // ✅ Pass origin, not 'true'
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
+  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
   optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+app.options("*", cors(corsOptions)); // Preflight handler
 
 app.use(cookieParser());
 app.use(express.json());
