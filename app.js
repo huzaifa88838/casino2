@@ -6,29 +6,11 @@ import mongoose from 'mongoose'
 const app = express();
 
 
-const allowedOrigins = ["https://www.gaintpro.com"];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) {
-      // Allow server-to-server or tools like curl
-      return callback(null, true);
-    }
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, origin); // ✅ Pass origin, not 'true'
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+app.use(cors({
+  origin: 'https://www.gaintpro.com',
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  optionsSuccessStatus: 204,
-};
+}));
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Preflight handler
 
 app.use(cookieParser());
 app.use(express.json());
